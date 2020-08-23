@@ -1,66 +1,56 @@
-import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody,
+import React from 'react';
+import { Card, CardImg,CardText, CardBody,
     CardTitle } from 'reactstrap';
+    const RenderComments=({comments})=> {
+           return(
+               <div>
+                 <h4>Comments</h4>
 
-class DishDetail extends Component{
-  constructor(props) {
-      super(props);
+                 {
+                   comments.map((comment)=>{
+                       return(
+                         <ul className="list-unstyled" key={comment.id}>
+                           <li>{comment.comment}</li>
+                           <li>--{comment.author},{comment.date}</li>
+                         </ul>
+                       );
+                   })
+                 }
+               </div>
+           );
 
-  }
-  renderComments(dish){
 
-      if (dish!= null)
-          return(
-              <div>
-                <h4>Comments</h4>
-                {
-                  dish.comments.map((comment)=>{
-                      return(
-                        <ul class="list-unstyled">
-                          <li>{comment.comment}</li>
-                          <li>--{comment.author},{comment.date}</li>
-                        </ul>
-                      );
-                  })
-                }
-              </div>
-          );
-      else
-          return(
-              <div></div>
-          );
+   }
+    const RenderDish=({dish})=> {
+           return(
+               <Card>
+                   <CardImg top src={dish.image} alt={dish.name} />
+                   <CardBody>
+                     <CardTitle>{dish.name}</CardTitle>
+                     <CardText>{dish.description}</CardText>
+                   </CardBody>
+               </Card>
+           );
 
-  }
-
-  renderDish(dish) {
-      if (dish != null)
-          return(
-              <Card>
-                  <CardImg top src={dish.image} alt={dish.name} />
-                  <CardBody>
-                    <CardTitle>{dish.name}</CardTitle>
-                    <CardText>{dish.description}</CardText>
-                  </CardBody>
-              </Card>
-          );
-      else
-          return(
-              <div></div>
-          );
-  }
-  render(){
+   }
+const  DishDetail = (props) => {
+  if (props.dish != null)
     return(
 
       <div className="row">
-        <div  className="col-12 col-md-5 m-1">
-          {this.renderDish(this.props.selectedDish)}
+        <div  className="col-12 col-md-5 m-1" >
+          <RenderDish dish={props.dish} />
         </div>
-        <div  className="col-12 col-md-5 m-1">
-          {this.renderComments(this.props.selectedDish)}
+        <div  className="col-12 col-md-5 m-1" >
+          <RenderComments comments={props.dish.comments} />
         </div>
       </div>
     );
-  }
+  else
+        return(
+            <div></div>
+        );
+
 }
 
 export default DishDetail;
