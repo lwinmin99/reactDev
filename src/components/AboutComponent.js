@@ -4,16 +4,12 @@ import { Link } from 'react-router-dom';
 
 function About(props) {
 
-    const leaders = props.leaders.map((leader) => {
-        return (
-            <p>Leader {leader.name}</p>
-        );
-    });
+
     const RenderLeader= ({leader})=>{
       return(
 
             <Media >
-              <div className="col-12 col-md-2 m-1"  key={leader.id}>
+              <div className="col-12 col-md-2 m-1"  key={props.key}>
                 <CardImg width="100%" src={leader.image} alt={leader.name} />
               </div>
               <div className="col col-md m-1">
@@ -32,7 +28,7 @@ function About(props) {
     }
     const leader = props.leaders.map((leader) => {
         return (
-                <RenderLeader leader={leader}/>
+                <RenderLeader leader={leader} key={leader.id}/>
 
         );
     });
