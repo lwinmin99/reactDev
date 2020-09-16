@@ -5,28 +5,28 @@ import { Link } from 'react-router-dom';
 function About(props) {
 
 
-    const RenderLeader= ({leader})=>{
+    const RenderLeader= (props)=>{
       return(
 
             <Media >
               <div className="col-12 col-md-2 m-1"  key={props.key}>
-                <CardImg width="100%" src={leader.image} alt={leader.name} />
+                <CardImg width="100%" src={props.leader.image} alt={props.leader.name} />
               </div>
               <div className="col col-md m-1">
                 <Media body>
                   <Media heading>
-                    {leader.name}
+                    {props.leader.name}
                   </Media>
-                  <CardSubtitle>{leader.designation}</CardSubtitle>
-                  {leader.designation}
-                  {leader.description}
+                  <CardSubtitle>{props.leader.designation}</CardSubtitle>
+                  {props.leader.designation}
+                  {props.leader.description}
                 </Media>
               </div>
             </Media>
 
       );
     }
-    const leader = props.leaders.map((leader) => {
+    const leader = props.leaders.leaders.map((leader) => {
         return (
                 <RenderLeader leader={leader} key={leader.id}/>
 

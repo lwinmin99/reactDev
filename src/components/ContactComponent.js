@@ -2,20 +2,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem,
             Button, Row, Col, Label } from 'reactstrap';
-import { Control, LocalForm, Errors } from 'react-redux-form';
+import {  Control, Form, Errors, actions  } from 'react-redux-form';
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 const isNumber = (val) => !isNaN(Number(val));
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
-function handleSubmit(values) {
-    console.log('Current State is: ' + JSON.stringify(values));
-    alert('Current State is: ' + JSON.stringify(values));
-    // event.preventDefault();
-}
 function Contact(props) {
-
+  function handleSubmit(values) {
+      console.log('Current State is: ' + JSON.stringify(values));
+      alert('Current State is: ' + JSON.stringify(values));
+      props.postFeedback(values.firstname,values.lastname,values.telnum,values.email,values.agree,values.contactType,values.message);
+      props.resetFeedbackForm();
+      // event.preventDefault();
+  }
     return(
         <div className="container">
             <div className="row">
@@ -59,7 +60,7 @@ function Contact(props) {
                     <h3>Send us Feedback</h3>
                 </div>
                 <div className="col-12 col-md-9">
-                  <LocalForm onSubmit={(values) => handleSubmit(values)}>
+                  <Form model="feedback" onSubmit={(values) => handleSubmit(values)}>
                     <Row className="form-group">
                         <Label htmlFor="firstname" md={2}>First Name</Label>
                         <Col md={10}>
@@ -182,7 +183,7 @@ function Contact(props) {
                             </Button>
                         </Col>
                     </Row>
-                  </LocalForm>
+                  </Form>
 
                 </div>
             </div>

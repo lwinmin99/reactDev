@@ -3,12 +3,12 @@ import { Card, CardImg, CardText, CardBody,
   CardTitle, Breadcrumb, BreadcrumbItem,Button,Modal, ModalHeader, ModalBody,
    Row, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Control,LocalForm, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
 
-
-    const RenderComments=({comments, addComment, dishId})=> {
+    const RenderComments=({comments, postComment, dishId})=> {
 
 
            return(
@@ -25,7 +25,7 @@ import { Loading } from './LoadingComponent';
                        );
                    })
                  }
-                 <CommentForm dishId={dishId} addComment={addComment} />
+                 <CommentForm dishId={dishId} postComment={postComment} />
                </div>
            );
 
@@ -35,7 +35,7 @@ import { Loading } from './LoadingComponent';
 
            return(
                <Card>
-                   <CardImg top src={dish.image} alt={dish.name} />
+                   <CardImg top src={baseUrl + dish.image} alt={dish.name} />
                    <CardBody>
                      <CardTitle>{dish.name}</CardTitle>
                      <CardText>{dish.description}</CardText>
@@ -52,7 +52,9 @@ import { Loading } from './LoadingComponent';
       const toggleModal = () => setIsModalOpen(!isModalOpen);
       function handleSubmit(values) {
           toggleModal();
-          props.addComment(props.dishId, values.rating, values.author, values.comment);
+          props.postComment(props.dishId, values.rating, values.author, values.comment);
+          console.log('Current State is: ' + JSON.stringify(values));
+          alert('Current State is: ' + JSON.stringify(values));
       }
       return(
         <React.Fragment>
@@ -62,18 +64,21 @@ import { Loading } from './LoadingComponent';
             <div className="container">
               <LocalForm onSubmit={(values) => handleSubmit(values)}>
                 <Row className="form-group">
-                    <Label htmlFor="raring">Rating</Label>
-                    <Control.select model=".contactType" name="contactType"
+                    <Label htmlFor="rating">Rating</Label>
+                    <Control.select model=".rating" name="rating"
                         className="form-control">
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+
                     </Control.select>
                 </Row>
                 <Row className="form-group">
-                    <Label htmlFor="yourname">Your Name</Label>
-                    <Control.text model=".yourname" id="yourname" name="yourname"
-                            placeholder="Last Name"
+                    <Label htmlFor="author">Your Name</Label>
+                    <Control.text model=".author" id="author" name="author"
+                            placeholder="Your Name"
                             className="form-control"
                             validators={{
                               required, minLength: minLength(3), maxLength: maxLength(15)
@@ -81,7 +86,7 @@ import { Loading } from './LoadingComponent';
                              />
                     <Errors
                              className="text-danger"
-                             model=".yourname"
+                             model=".author"
                              show="touched"
                              messages={{
                                required: 'Required',
@@ -91,8 +96,8 @@ import { Loading } from './LoadingComponent';
                              />
                 </Row>
                 <Row className="form-group">
-                    <Label htmlFor="message">Comment</Label>
-                        <Control.textarea model=".message" id="message" name="message"
+                    <Label htmlFor="comment">Comment</Label>
+                        <Control.textarea model=".comment" id="comment" name="comment"
                             rows="6"
                             className="form-control" />
                 </Row>
@@ -149,7 +154,7 @@ const  DishDetail = (props) => {
           </div>
           <div  className="col-12 col-md-5 m-1" >
             <RenderComments comments={props.comments}
-              addComment={props.addComment}
+              postComment={props.postComment}
               dishId={props.dish.id}
             />
           </div>
